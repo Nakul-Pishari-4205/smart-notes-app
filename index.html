@@ -154,6 +154,18 @@
     .storage-bar i { display: block; width: 38%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #91e0c3, var(--accent)); animation: progress 1.2s ease both; }
     .storage-caption { margin-top: 8px; color: var(--subtle); font-size: 10px; }
     .sidebar-footer { display: flex; justify-content: space-between; align-items: center; padding: 17px 2px 0; color: var(--subtle); font-size: 10px; }
+    .account-card { display: grid; gap: 10px; padding: 12px; margin: 0 0 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface-soft); }
+    .account-card-top { display: flex; min-width: 0; align-items: center; gap: 9px; }
+    .account-avatar { display: grid; width: 30px; height: 30px; flex: 0 0 auto; place-items: center; border-radius: 10px; color: var(--accent); background: var(--accent-wash); }
+    .account-copy { min-width: 0; }
+    .account-title { overflow: hidden; color: var(--text); font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .account-caption { margin-top: 3px; color: var(--subtle); font-size: 9px; line-height: 1.35; }
+    .account-button { display: inline-flex; min-height: 33px; width: 100%; align-items: center; justify-content: center; gap: 7px; padding: 0 9px; border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--line)); border-radius: 9px; color: var(--accent); background: var(--accent-wash); font-size: 10px; font-weight: 700; cursor: pointer; transition: .2s ease; }
+    .account-button:hover:not(:disabled) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 19%, transparent); }
+    .account-button:disabled { cursor: not-allowed; opacity: .55; }
+    .account-button.secondary { border-color: var(--line); color: var(--muted); background: transparent; }
+    .account-sync { color: var(--green); font-size: 9px; }
+    .account-sync.error { color: #ef929f; }
     .theme-button, .icon-button, .mobile-menu {
       display: inline-grid;
       flex: 0 0 auto;
@@ -363,6 +375,22 @@
     .confirm-dialog p { margin: 9px 0 20px; color: var(--muted); font-size: 11px; line-height: 1.6; }
     .confirm-actions { display: flex; justify-content: center; gap: 9px; }
     .delete-button { min-height: 38px; padding: 0 15px; border: 0; border-radius: 10px; color: #fff; background: #c85d70; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .auth-dialog { width: min(430px, 100%); padding: 25px; }
+    .auth-intro { margin: -5px 0 18px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .auth-provider-list { display: grid; gap: 9px; }
+    .auth-provider { display: flex; min-height: 43px; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--line); border-radius: 11px; color: var(--text); background: var(--surface-soft); font-size: 11px; font-weight: 700; cursor: pointer; transition: .2s ease; }
+    .auth-provider:hover:not(:disabled) { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: var(--accent-wash); }
+    .auth-provider:disabled { cursor: not-allowed; opacity: .55; }
+    .provider-mark { display: grid; width: 20px; height: 20px; place-items: center; font-size: 13px; font-weight: 800; }
+    .provider-google { color: #4285f4; }
+    .provider-microsoft { color: #00a4ef; }
+    .provider-apple { color: var(--text); }
+    .auth-message { padding: 11px 12px; margin-top: 14px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--surface-soft); font-size: 10px; line-height: 1.6; }
+    .auth-message a { color: var(--accent); }
+    .auth-message.error { border-color: rgba(239,146,159,.25); color: #ef929f; }
+    .auth-footnote { margin: 13px 0 0; color: var(--subtle); font-size: 9px; line-height: 1.55; text-align: center; }
+    .account-actions { display: flex; gap: 8px; }
+    .account-actions .account-button { flex: 1; }
     .toast-region { position: fixed; z-index: 50; right: 22px; bottom: 20px; display: grid; gap: 8px; pointer-events: none; }
     .toast { display: flex; min-width: 220px; max-width: min(370px, calc(100vw - 32px)); align-items: center; gap: 9px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; color: var(--text); background: var(--surface-strong); box-shadow: var(--shadow); backdrop-filter: blur(20px); font-size: 11px; animation: toast-in .28s cubic-bezier(.2,.8,.2,1) both; }
     .toast-mark { color: var(--green); font-size: 15px; }
@@ -464,6 +492,7 @@
         <button class="nav-button" data-view="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 5 5-4 1-4 4-1 6-2-2-2 2 1-6-4-4-1-4Z"/><path d="m7 17-4 4"/></svg>Pinned<span class="nav-count" id="pinned-count">0</span></button>
         <button class="nav-button" data-view="archive"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v4H3z"/><path d="M5 8v12h14V8m-9 4h4"/></svg>Archive<span class="nav-count" id="archive-count">0</span></button>
       </nav>
+      <section class="account-card" id="account-card" aria-label="Your account"></section>
       <section class="tag-section" aria-labelledby="tag-section-title">
         <div class="side-label" id="tag-section-title">Your tags</div>
         <div class="tag-list" id="sidebar-tags"></div>
@@ -512,6 +541,7 @@
   </div>
   <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
 
+  <script src="./supabase-config.js"></script>
   <script>
     (() => {
       "use strict";
@@ -519,7 +549,17 @@
       // State Management
       const STORAGE_KEY = "smart-notes-v1";
       const THEME_KEY = "smart-notes-theme";
+      const SUPABASE_CONFIG = window.SMART_NOTES_SUPABASE || {};
       const colors = ["#a98bfa", "#edb970", "#72c9c1", "#e989a8", "#8a9fdf", "#83bb86"];
+      let currentUser = null;
+      let supabaseClient = null;
+      let cloudAuthError = "";
+      let cloudSyncState = "guest";
+      let cloudSyncTimer = null;
+      let cloudSyncQueue = Promise.resolve();
+      let realtimeChannel = null;
+      let realtimeRefreshTimer = null;
+      let authGeneration = 0;
       let hasStoredNotes = false;
       const starterNotes = [
         { id: "welcome-note", title: "Welcome to Smart Notes", content: "Capture your ideas, organize your thoughts, and keep everything in one beautiful workspace. Your notes are saved right here on your device.", tags: ["welcome", "ideas"], color: "#a98bfa", favorite: true, pinned: true, archived: false },
@@ -527,7 +567,8 @@
         { id: "website-ideas", title: "Website Ideas", content: "Ideas for building creative websites and interactive projects. Try a personal reading tracker, a tiny recipe archive, or a playful portfolio with a few delightful interactions.", tags: ["coding", "projects"], color: "#edb970", favorite: false, pinned: false, archived: false }
       ];
       const now = new Date().toISOString();
-      let notes = loadNotes();
+      let notes = loadNotes(true);
+      let guestNotesSnapshot = notes.map(note => ({ ...note, tags: [...note.tags] }));
       let currentView = "all";
       let selectedTag = "";
       let searchQuery = "";
@@ -537,11 +578,15 @@
       let autoSaveTimer = null;
       let pendingStorageWarning = false;
 
-      function loadNotes() {
+      function notesStorageKey() {
+        return currentUser ? `${STORAGE_KEY}:user:${currentUser.id}` : STORAGE_KEY;
+      }
+
+      function loadNotes(useStarterNotes) {
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
+          const raw = localStorage.getItem(notesStorageKey());
           hasStoredNotes = raw !== null;
-          if (!raw) return starterNotes.map((note, index) => ({ ...note, createdAt: now, updatedAt: new Date(Date.now() - index * 3600000).toISOString() }));
+          if (!raw) return useStarterNotes ? starterNotes.map((note, index) => ({ ...note, createdAt: now, updatedAt: new Date(Date.now() - index * 3600000).toISOString() })) : [];
           const parsed = JSON.parse(raw);
           if (!Array.isArray(parsed)) throw new Error("Saved notes are not a list.");
           return parsed.filter(note => note && typeof note.id === "string").map(note => ({
@@ -559,13 +604,17 @@
         } catch (error) {
           pendingStorageWarning = true;
           console.error("Could not load saved notes:", error);
-          return starterNotes.map((note, index) => ({ ...note, createdAt: now, updatedAt: new Date(Date.now() - index * 3600000).toISOString() }));
+          return useStarterNotes
+            ? starterNotes.map((note, index) => ({ ...note, createdAt: now, updatedAt: new Date(Date.now() - index * 3600000).toISOString() }))
+            : [];
         }
       }
 
       function saveNotes() {
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+          localStorage.setItem(notesStorageKey(), JSON.stringify(notes));
+          if (currentUser && supabaseClient) scheduleCloudSync();
+          else if (!currentUser) guestNotesSnapshot = notes.map(note => ({ ...note, tags: [...note.tags] }));
           return true;
         } catch (error) {
           console.error("Could not save notes:", error);
@@ -595,6 +644,316 @@
         };
         return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || ""}</svg>`;
       };
+      const isSupabaseConfigured = () => typeof SUPABASE_CONFIG.url === "string" && /^https:\/\//.test(SUPABASE_CONFIG.url) && typeof SUPABASE_CONFIG.anonKey === "string" && SUPABASE_CONFIG.anonKey.length > 20 && !SUPABASE_CONFIG.anonKey.includes("YOUR_");
+      const canUseOAuthRedirect = () => window.location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+      function renderAccountCard() {
+        const card = $("#account-card");
+        if (!card) return;
+        if (currentUser) {
+          const email = currentUser.email || "Signed-in account";
+          const status = {
+            ready: "Cloud sync is on",
+            saving: "Saving to your account…",
+            synced: "All notes synced",
+            error: "Cloud sync needs attention"
+          }[cloudSyncState] || "Loading your notes…";
+          const importAction = cloudSyncState === "synced" && notes.length === 0 && guestNotesSnapshot.length > 0
+            ? `<button class="account-button" type="button" data-action="import-local-notes">Import ${guestNotesSnapshot.length} device ${guestNotesSnapshot.length === 1 ? "note" : "notes"}</button>`
+            : "";
+          card.innerHTML = `<div class="account-card-top"><span class="account-avatar">${icon("note", 15)}</span><div class="account-copy"><div class="account-title">${escapeHtml(email)}</div><div class="account-caption account-sync${cloudSyncState === "error" ? " error" : ""}" id="account-sync-status">${escapeHtml(status)}</div></div></div>${importAction}<button class="account-button secondary" type="button" data-action="sign-out">Sign out</button>`;
+          return;
+        }
+        const configured = isSupabaseConfigured();
+        card.innerHTML = `<div class="account-card-top"><span class="account-avatar">${icon("note", 15)}</span><div class="account-copy"><div class="account-title">Your account</div><div class="account-caption">${configured ? "Sync notes across your devices." : "Notes are saved on this device."}</div></div></div><button class="account-button" type="button" data-action="open-auth">${configured ? "Sign in to sync" : "Set up account sync"}</button>`;
+      }
+
+      function openAuthDialog() {
+        const configured = isSupabaseConfigured();
+        const canRedirect = canUseOAuthRedirect();
+        const ready = configured && Boolean(supabaseClient) && canRedirect;
+        let message = "Cloud accounts are not configured yet. Add your Supabase project URL and publishable key in <code>supabase-config.js</code>, then complete the provider setup in the README.";
+        if (configured && !supabaseClient) message = cloudAuthError || "Connecting to the account service…";
+        else if (configured && !canRedirect) message = "Sign-in requires the secure published HTTPS website. Open the GitHub Pages link to continue.";
+        else if (ready) message = "Your notes will be private to your account and will sync across your devices.";
+        dialogNode = document.createElement("div");
+        dialogNode.className = "overlay";
+        dialogNode.dataset.dialog = "auth";
+        dialogNode.innerHTML = `<section class="dialog auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-heading"><div class="dialog-header"><h2 class="dialog-title" id="auth-heading">Your notes, everywhere</h2><button class="icon-button" type="button" data-action="close-dialog" aria-label="Close sign in">${icon("close", 17)}</button></div><p class="auth-intro">Sign in or create an account. Notes saved to an account stay separate from guest notes on this device.</p><div class="auth-provider-list"><button class="auth-provider" type="button" data-provider="google" ${ready ? "" : "disabled"}><span class="provider-mark provider-google" aria-hidden="true">G</span>Continue with Google</button><button class="auth-provider" type="button" data-provider="azure" ${ready ? "" : "disabled"}><span class="provider-mark provider-microsoft" aria-hidden="true">▦</span>Continue with Microsoft</button><button class="auth-provider" type="button" data-provider="apple" ${ready ? "" : "disabled"}><span class="provider-mark provider-apple" aria-hidden="true">●</span>Continue with Apple</button></div><div class="auth-message${configured && !supabaseClient ? " error" : ""}" role="status">${message}</div><p class="auth-footnote">Signing in with a provider creates your account automatically if you’re new.</p></section>`;
+        document.body.append(dialogNode);
+        $('[data-action="close-dialog"]', dialogNode).focus();
+      }
+
+      function handleCloudError(error, message = "Cloud sync failed. Your changes are still saved on this device.") {
+        console.error(message, error);
+        cloudSyncState = "error";
+        cloudAuthError = message;
+        renderAccountCard();
+        showToast(message, "error");
+      }
+
+      function cloudNoteRows() {
+        return notes.map(note => ({
+          id: note.id,
+          user_id: currentUser.id,
+          title: note.title,
+          content: note.content,
+          tags: note.tags,
+          color: note.color,
+          favorite: note.favorite,
+          pinned: note.pinned,
+          archived: note.archived,
+          created_at: note.createdAt,
+          updated_at: note.updatedAt
+        }));
+      }
+
+      function createNoteId() {
+        return window.crypto && crypto.randomUUID ? crypto.randomUUID() : `note-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      }
+
+      function importGuestNotes() {
+        if (!currentUser || notes.length || !guestNotesSnapshot.length) return;
+        const timestamp = new Date().toISOString();
+        notes = guestNotesSnapshot.map(note => ({ ...note, id: createNoteId(), tags: [...note.tags], createdAt: note.createdAt || timestamp, updatedAt: timestamp }));
+        const importedCount = notes.length;
+        if (saveNotes()) {
+          renderAccountCard();
+          render();
+          showToast(`${importedCount} device ${importedCount === 1 ? "note" : "notes"} added to your account. Syncing now.`);
+        }
+      }
+
+      function mapCloudNote(row) {
+        return {
+          id: row.id,
+          title: row.title,
+          content: row.content,
+          tags: Array.isArray(row.tags) ? row.tags : [],
+          color: colors.includes(row.color) ? row.color : colors[0],
+          favorite: Boolean(row.favorite),
+          pinned: Boolean(row.pinned),
+          archived: Boolean(row.archived),
+          createdAt: row.created_at,
+          updatedAt: row.updated_at
+        };
+      }
+
+      async function syncCloudNotes() {
+        if (!currentUser || !supabaseClient) return;
+        const userId = currentUser.id;
+        const rows = cloudNoteRows();
+        if (rows.length) {
+          const { error } = await supabaseClient.from("notes").upsert(rows, { onConflict: "user_id,id" });
+          if (error) throw error;
+        }
+        if (currentUser?.id === userId) {
+          cloudSyncState = "synced";
+          cloudAuthError = "";
+          renderAccountCard();
+        }
+      }
+
+      function queueCloudSync() {
+        cloudSyncQueue = cloudSyncQueue.then(syncCloudNotes).catch(error => {
+          handleCloudError(error);
+        });
+        return cloudSyncQueue;
+      }
+
+      function scheduleCloudSync() {
+        if (!currentUser || !supabaseClient) return;
+        clearTimeout(cloudSyncTimer);
+        cloudSyncState = "saving";
+        renderAccountCard();
+        cloudSyncTimer = setTimeout(() => {
+          cloudSyncTimer = null;
+          queueCloudSync();
+        }, 450);
+      }
+
+      async function flushCloudSync() {
+        if (!currentUser || !supabaseClient) return;
+        clearTimeout(cloudSyncTimer);
+        cloudSyncTimer = null;
+        await queueCloudSync();
+      }
+
+      function deleteCloudNote(id) {
+        if (!currentUser || !supabaseClient) return;
+        clearTimeout(cloudSyncTimer);
+        cloudSyncTimer = null;
+        cloudSyncQueue = cloudSyncQueue.then(syncCloudNotes).then(async () => {
+          if (!currentUser || !supabaseClient) return;
+          const { error } = await supabaseClient.from("notes").delete().eq("id", id).eq("user_id", currentUser.id);
+          if (error) throw error;
+        }).catch(error => handleCloudError(error, "The note was deleted on this device but could not be deleted from the cloud."));
+      }
+
+      async function fetchCloudNotes(userId) {
+        const { data, error } = await supabaseClient.from("notes")
+          .select("id,title,content,tags,color,favorite,pinned,archived,created_at,updated_at")
+          .eq("user_id", userId)
+          .order("updated_at", { ascending: false });
+        if (error) throw error;
+        return data.map(mapCloudNote);
+      }
+
+      function cacheAccountNotes(userId) {
+        try {
+          localStorage.setItem(`${STORAGE_KEY}:user:${userId}`, JSON.stringify(notes));
+        } catch (error) {
+          console.error("Could not cache account notes:", error);
+          showToast("Notes are synced, but could not be cached on this device.", "error");
+        }
+      }
+
+      async function refreshCloudNotes(userId) {
+        if (!supabaseClient || currentUser?.id !== userId || cloudSyncTimer) return;
+        try {
+          notes = await fetchCloudNotes(userId);
+          if (currentUser?.id !== userId) return;
+          cacheAccountNotes(userId);
+          cloudSyncState = "synced";
+          renderAccountCard();
+          render();
+        } catch (error) {
+          handleCloudError(error, "Could not refresh notes from your account.");
+        }
+      }
+
+      function scheduleRealtimeRefresh(userId) {
+        clearTimeout(realtimeRefreshTimer);
+        realtimeRefreshTimer = setTimeout(() => {
+          if (cloudSyncTimer) {
+            scheduleRealtimeRefresh(userId);
+            return;
+          }
+          void refreshCloudNotes(userId);
+        }, 600);
+      }
+
+      async function applyAuthSession(session) {
+        const nextUser = session?.user || null;
+        if (currentUser?.id === nextUser?.id) {
+          renderAccountCard();
+          return;
+        }
+        const generation = ++authGeneration;
+        await flushCloudSync();
+        clearTimeout(realtimeRefreshTimer);
+        realtimeRefreshTimer = null;
+        if (realtimeChannel) {
+          await supabaseClient.removeChannel(realtimeChannel);
+          realtimeChannel = null;
+        }
+        currentUser = nextUser;
+        cloudAuthError = "";
+        if (!currentUser) {
+          cloudSyncState = "guest";
+          notes = loadNotes(true);
+          guestNotesSnapshot = notes.map(note => ({ ...note, tags: [...note.tags] }));
+          renderAccountCard();
+          render();
+          return;
+        }
+        cloudSyncState = "loading";
+        notes = loadNotes(false);
+        renderAccountCard();
+        render();
+        try {
+          const userId = currentUser.id;
+          const cloudNotes = await fetchCloudNotes(userId);
+          if (generation !== authGeneration || currentUser?.id !== userId) return;
+          notes = cloudNotes;
+          cacheAccountNotes(userId);
+          cloudSyncState = "synced";
+          renderAccountCard();
+          render();
+          realtimeChannel = supabaseClient.channel(`notes:${userId}`)
+            .on("postgres_changes", { event: "*", schema: "public", table: "notes", filter: `user_id=eq.${userId}` }, () => scheduleRealtimeRefresh(userId))
+            .subscribe(status => {
+              if (status === "CHANNEL_ERROR" && currentUser?.id === userId) {
+                handleCloudError(new Error("Supabase Realtime subscription failed."), "Live sync is unavailable. Notes will refresh when you reopen the app.");
+              }
+            });
+        } catch (error) {
+          if (generation !== authGeneration) return;
+          cloudSyncState = "error";
+          cloudAuthError = "Could not load account notes. Check your connection and Supabase setup.";
+          console.error(cloudAuthError, error);
+          renderAccountCard();
+          showToast(cloudAuthError, "error");
+        }
+      }
+
+      async function startOAuth(provider) {
+        if (!supabaseClient || !canUseOAuthRedirect()) {
+          showToast("Account sign-in is not configured for this page yet.", "error");
+          return;
+        }
+        const buttons = $$(".auth-provider", dialogNode);
+        buttons.forEach(button => { button.disabled = true; });
+        $(".auth-message", dialogNode).textContent = `Connecting to ${provider === "azure" ? "Microsoft" : provider[0].toUpperCase() + provider.slice(1)}…`;
+        try {
+          const { error } = await supabaseClient.auth.signInWithOAuth({
+            provider,
+            options: {
+              redirectTo: `${window.location.origin}${window.location.pathname}`,
+              ...(provider === "azure" ? { scopes: "email" } : {})
+            }
+          });
+          if (error) throw error;
+        } catch (error) {
+          console.error(`Could not start ${provider} sign-in:`, error);
+          if (dialogNode?.dataset.dialog === "auth") {
+            $(".auth-message", dialogNode).textContent = "Sign-in could not be started. Check that this provider is enabled in Supabase.";
+            $(".auth-message", dialogNode).classList.add("error");
+            buttons.forEach(button => { button.disabled = false; });
+          }
+          showToast("Could not start account sign-in.", "error");
+        }
+      }
+
+      async function signOut() {
+        if (!supabaseClient) return;
+        await flushCloudSync();
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+          console.error("Could not sign out:", error);
+          showToast("Could not sign out. Please try again.", "error");
+          return;
+        }
+        showToast("Signed out. Your account notes remain safely in the cloud.");
+      }
+
+      async function initializeCloudAuth() {
+        renderAccountCard();
+        if (!isSupabaseConfigured()) return;
+        if (!canUseOAuthRedirect()) {
+          cloudAuthError = "Open the HTTPS GitHub Pages URL to sign in.";
+          renderAccountCard();
+          return;
+        }
+        try {
+          const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+          supabaseClient = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: "pkce" }
+          });
+          const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+            setTimeout(() => { void applyAuthSession(session); }, 0);
+          });
+          supabaseClient.authSubscription = subscription;
+          const { data: { session }, error } = await supabaseClient.auth.getSession();
+          if (error) throw error;
+          await applyAuthSession(session);
+        } catch (error) {
+          cloudAuthError = "Could not connect to Supabase. Check the project URL, public key, and network.";
+          console.error(cloudAuthError, error);
+          renderAccountCard();
+        }
+      }
+
       const formatDate = value => {
         const date = new Date(value);
         if (Number.isNaN(date.getTime())) return "Just now";
@@ -795,7 +1154,7 @@
         }
         if (dialogNode._isNew) {
           const timestamp = new Date().toISOString();
-          draft.id = window.crypto && crypto.randomUUID ? crypto.randomUUID() : `note-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+          draft.id = createNoteId();
           draft.createdAt = timestamp;
           draft.updatedAt = timestamp;
           notes.unshift(draft);
@@ -955,6 +1314,9 @@
           const { action, id } = actionTarget.dataset;
           switch (action) {
             case "new-note": openEditor(); break;
+            case "open-auth": openAuthDialog(); break;
+            case "sign-out": void signOut(); break;
+            case "import-local-notes": importGuestNotes(); break;
             case "close-dialog": closeDialog(); break;
             case "save-editor": saveEditor(); break;
             case "menu": event.stopPropagation(); openMenuId = openMenuId === id ? "" : id; render(); break;
@@ -977,6 +1339,7 @@
               notes = notes.filter(item => item.id !== id);
               closeDialog();
               const saved = saveNotes();
+              if (currentUser) deleteCloudNote(id);
               render();
               if (saved) showToast(`“${note?.title || "Note"}” deleted`);
               break;
@@ -993,6 +1356,11 @@
               break;
             }
           }
+          return;
+        }
+        const providerButton = event.target.closest("[data-provider]");
+        if (providerButton) {
+          void startOAuth(providerButton.dataset.provider);
           return;
         }
         const flag = event.target.closest("[data-editor-flag]");
@@ -1068,6 +1436,11 @@
       document.addEventListener("click", event => {
         if (dialogNode && event.target === dialogNode) closeDialog();
       });
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible" && currentUser) {
+          void refreshCloudNotes(currentUser.id);
+        }
+      });
       document.addEventListener("keydown", event => {
         if (event.target instanceof Element && event.target.matches("[data-note-card]") && event.key === " ") { event.preventDefault(); openReader(findNote(event.target.dataset.noteCard)); }
       });
@@ -1086,6 +1459,7 @@
         render();
         if (!hasStoredNotes) saveNotes();
         if (pendingStorageWarning) showToast("Saved data could not be read; sample notes are shown until you save.", "error");
+        void initializeCloudAuth();
       }
       initialize();
     })();
